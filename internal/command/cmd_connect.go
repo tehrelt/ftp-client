@@ -20,7 +20,7 @@ func (c *ConnectCommand) Execute(args []string) (STATUS, error) {
 	if len(args) < 2 {
 		return ERROR, ErrArgs
 	}
-	
+
 	if err := c.client.Connect(fmt.Sprintf("%s:%s", args[0], args[1])); err != nil {
 		return ERROR, err
 	}

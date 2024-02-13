@@ -83,7 +83,7 @@ func (session *Session) Pwd() (string, error) {
 	return session.client.CurrentDir()
 }
 
-func (session *Session) Ls() ([]*ftp.Entry, error) {
+func (session *Session) List() ([]*ftp.Entry, error) {
 	if !session.IsOpen {
 		return nil, ErrConnectionClosed
 	}
