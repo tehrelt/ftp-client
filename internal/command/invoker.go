@@ -19,7 +19,7 @@ func NewInvoker(session *session.Session) *Invoker {
 			"disconnect": NewDisconnectCommand(session),
 			"noop":       NewNoopCommand(session),
 			"quit":       NewQuitCommand(session),
-			"help":
+			"help":       NewHelpCommand(),
 		},
 	}
 }
