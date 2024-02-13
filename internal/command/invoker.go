@@ -23,6 +23,7 @@ func NewInvoker(session *session.Session) *Invoker {
 			"pwd":        NewPwdCommand(session),
 			"login":      NewLoginCommand(session),
 			"ls":         NewListCommand(session),
+			"cd":         NewCwdCommand(session),
 		},
 	}
 }

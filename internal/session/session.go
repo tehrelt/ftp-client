@@ -3,6 +3,7 @@ package session
 import (
 	"errors"
 	"log"
+	"strings"
 
 	"github.com/jlaffaye/ftp"
 )
@@ -94,4 +95,16 @@ func (session *Session) List() ([]*ftp.Entry, error) {
 	}
 
 	return session.client.List(pwd)
+}
+
+func (session *Session) Cwd(dir string) error {
+	if !session.IsOpen {
+		return ErrConnectionClosed
+	}
+
+	if strings.Compare(dir, "..") == 0 {
+		return session.client.ChangeDirToParent()
+	}
+
+	return session.client.ChangeDir(dir)
 }
