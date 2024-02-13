@@ -129,3 +129,31 @@ func (session *Session) Put(file string, bytes io.Reader) error {
 
 	return session.client.Stor(file, bytes)
 }
+
+func (session *Session) Mkdir(dirName string) error {
+	if !session.IsOpen {
+		return ErrConnectionClosed
+	}
+
+	return session.client.MakeDir(dirName)
+}
+
+func (session *Session) Remove(fileName string) error {
+	if !session.IsOpen {
+		return ErrConnectionClosed
+	}
+
+	return session.client.Delete(fileName)
+}
+
+func (session *Session) RmDir(dirName string, recursive bool) error {
+	if !session.IsOpen {
+		return ErrConnectionClosed
+	}
+
+	if recursive {
+		return session.client.RemoveDirRecur(dirName)
+	}
+
+	return session.client.RemoveDir(dirName)
+}

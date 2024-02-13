@@ -26,6 +26,9 @@ func NewInvoker(session *session.Session) *Invoker {
 			"cd":         NewCwdCommand(session),
 			"get":        NewGetCommand(session),
 			"put":        NewPutCommand(session),
+			"mkdir":      NewMkdirCommand(session),
+			"rm":         NewRmCommand(session),
+			"rmdir":      NewRmdirCommand(session),
 		},
 	}
 }
