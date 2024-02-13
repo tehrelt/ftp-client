@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 	"ftp-client/internal/command"
+	sess "ftp-client/internal/session"
 	"ftp-client/internal/terminal"
 	"os"
 	"os/signal"
 	"syscall"
-
-	"github.com/jlaffaye/ftp"
 )
 
 func main() {
@@ -20,30 +19,30 @@ func main() {
 		syscall.SIGQUIT)
 
 	statusChan := make(chan command.STATUS)
-
 	cmdChan := make(chan *command.CommandArgs)
 	waitChan := make(chan struct{})
 
 	termux := terminal.NewTerminal(cmdChan, waitChan)
+
 	go termux.Run()
 
-	var client *ftp.ServerConn
-	invoker := command.NewInvoker()
+	session := sess.NewSession()
+	invoker := command.NewInvoker(session)
 
-	go func(client *ftp.ServerConn) {
+	go func(client *sess.Session) {
 		_ = <-sigChan
-		if client != nil {
-			client.Quit()
+		if client.IsOpen {
+			client.Disconnect()
 		}
 		os.Exit(-1)
-	}(client)
+	}(session)
 
 	go func() {
 		for {
 			select {
 			case status := <-statusChan:
 				if status == command.EXIT {
-					sigChan <- syscall.SIGINT
+					os.Exit(0)
 				}
 			}
 		}
@@ -52,12 +51,11 @@ func main() {
 	for {
 		select {
 		case cmd := <-cmdChan:
-			status, err := invoker.Execute(cmd, client)
+			status, err := invoker.Execute(cmd)
 			if err != nil {
 				fmt.Printf("%s\n", err.Error())
 			}
 
-			fmt.Printf("Status recieved %d\n", status)
 			statusChan <- status
 
 			waitChan <- struct{}{}

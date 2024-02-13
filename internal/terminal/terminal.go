@@ -40,8 +40,6 @@ func (t *Terminal) Run() error {
 
 		t.cmdChannel <- command.NewArgs(prompt)
 
-		fmt.Print("wait channel is waiting\n")
 		<-t.waitChannel
-		fmt.Print("wait channel recieved\n")
 	}
 }

@@ -1,17 +1,22 @@
 package command
 
-import "github.com/jlaffaye/ftp"
+import (
+	"ftp-client/internal/session"
+)
 
 type DisconnectCommand struct {
+	client *session.Session
 }
 
-func NewDisconnectCommand() *DisconnectCommand {
-	return &DisconnectCommand{}
+func NewDisconnectCommand(s *session.Session) *DisconnectCommand {
+	return &DisconnectCommand{
+		client: s,
+	}
 }
 
-func (cmd *DisconnectCommand) Execute(client *ftp.ServerConn, args []string) (STATUS, error) {
+func (cmd *DisconnectCommand) Execute(args []string) (STATUS, error) {
 
-	if err := client.Quit(); err != nil {
+	if err := cmd.client.Disconnect(); err != nil {
 		return ERROR, err
 	}
 

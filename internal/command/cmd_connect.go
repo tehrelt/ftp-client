@@ -2,29 +2,30 @@ package command
 
 import (
 	"fmt"
-	"time"
-
-	"github.com/jlaffaye/ftp"
+	"ftp-client/internal/session"
 )
 
 type ConnectCommand struct {
+	client *session.Session
 }
 
-func NewConnectCommand() *ConnectCommand {
-	return &ConnectCommand{}
+func NewConnectCommand(s *session.Session) *ConnectCommand {
+	return &ConnectCommand{
+		client: s,
+	}
 }
 
-func (c *ConnectCommand) Execute(client *ftp.ServerConn, args []string) (STATUS, error) {
-	var err error
+func (c *ConnectCommand) Execute(args []string) (STATUS, error) {
 
 	if len(args) < 2 {
 		fmt.Printf("usage: connect ip port\n")
 		return ERROR, ErrArgs
 	}
-
-	if client, err = ftp.Dial(fmt.Sprintf("%s:%s", args[0], args[1]), ftp.DialWithTimeout(5*time.Second)); err != nil {
+	if err := c.client.Connect(fmt.Sprintf("%s:%s", args[0], args[1])); err != nil {
 		return ERROR, err
 	}
+
+	fmt.Printf("Connected to %s:%s\n", args[0], args[1])
 
 	return SUCCESS, nil
 }

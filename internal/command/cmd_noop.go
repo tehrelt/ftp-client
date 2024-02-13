@@ -1,19 +1,27 @@
 package command
 
-import "github.com/jlaffaye/ftp"
+import (
+	"fmt"
+	"ftp-client/internal/session"
+)
 
 type NoopCommand struct {
+	client *session.Session
 }
 
-func NewNoopCommand() *NoopCommand {
-	return &NoopCommand{}
+func NewNoopCommand(s *session.Session) *NoopCommand {
+	return &NoopCommand{
+		client: s,
+	}
 }
 
-func (cmd *NoopCommand) Execute(client *ftp.ServerConn, args []string) (STATUS, error) {
+func (cmd *NoopCommand) Execute(args []string) (STATUS, error) {
 
-	if err := client.NoOp(); err != nil {
+	if err := cmd.client.Noop(); err != nil {
 		return ERROR, err
 	}
+
+	fmt.Printf("Connection alive\n")
 
 	return SUCCESS, nil
 }

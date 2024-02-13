@@ -3,8 +3,6 @@ package command
 import (
 	"errors"
 	"strings"
-
-	"github.com/jlaffaye/ftp"
 )
 
 type STATUS int
@@ -20,7 +18,7 @@ var (
 )
 
 type Command interface {
-	Execute(client *ftp.ServerConn, args []string) (STATUS, error)
+	Execute(args []string) (STATUS, error)
 }
 
 type CommandArgs struct {
