@@ -2,14 +2,14 @@ package command
 
 import "fmt"
 
-type NoopCommand struct {
+type HelpCommand struct {
 }
 
-func NewHelpCommand() *NoopCommand {
-	return &NoopCommand{}
+func NewHelpCommand() *HelpCommand {
+	return &HelpCommand{}
 }
 
-func (cmd *NoopCommand) Execute(args []string) (STATUS, error) {
+func (cmd *HelpCommand) Execute(args []string) (STATUS, error) {
 
 	fmt.Println("connect <ip> <port> - Подключение к FTP-серверу")
 	fmt.Println("disconnect - Отключение")
