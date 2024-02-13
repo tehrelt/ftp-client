@@ -1,7 +1,6 @@
 package command
 
 import (
-	"errors"
 	"fmt"
 	"ftp-client/internal/session"
 )
@@ -36,7 +35,7 @@ func NewInvoker(session *session.Session) *Invoker {
 func (i *Invoker) Execute(args *CommandArgs) (STATUS, error) {
 	cmd, ok := i.commands[args.Handle]
 	if !ok {
-		return ERROR, errors.New(fmt.Sprintf("command '%s' not found. Try help", args.Handle))
+		return ERROR, fmt.Errorf("command '%s' not found. Try help", args.Handle)
 	}
 	return cmd.Execute(args.Args)
 }
