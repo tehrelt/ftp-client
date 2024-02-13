@@ -15,11 +15,13 @@ func NewInvoker(session *session.Session) *Invoker {
 	return &Invoker{
 		session: session,
 		commands: map[string]Command{
+			"help":       NewHelpCommand(),
 			"connect":    NewConnectCommand(session),
 			"disconnect": NewDisconnectCommand(session),
 			"noop":       NewNoopCommand(session),
 			"quit":       NewQuitCommand(session),
-			"help":       NewHelpCommand(),
+			"pwd":        NewPwdCommand(session),
+			"login":      NewLoginCommand(session),
 		},
 	}
 }

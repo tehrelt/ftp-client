@@ -72,9 +72,26 @@ func (session *Session) Noop() error {
 		return ErrConnectionClosed
 	}
 
-	if err := session.client.NoOp(); err != nil {
-		return err
+	return session.client.NoOp()
+}
+
+func (session *Session) Pwd() (string, error) {
+	if !session.IsOpen {
+		return "", ErrConnectionClosed
 	}
 
-	return nil
+	return session.client.CurrentDir()
+}
+
+func (session *Session) Ls() ([]*ftp.Entry, error) {
+	if !session.IsOpen {
+		return nil, ErrConnectionClosed
+	}
+
+	pwd, err := session.Pwd()
+	if err != nil {
+		return nil, err
+	}
+
+	return session.client.List(pwd)
 }

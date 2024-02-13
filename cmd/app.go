@@ -53,7 +53,11 @@ func main() {
 		case cmd := <-cmdChan:
 			status, err := invoker.Execute(cmd)
 			if err != nil {
-				fmt.Printf("%s\n", err.Error())
+				if err == command.ErrArgs {
+					fmt.Printf("Enter 'help' for args-guide\n")
+				} else {
+					fmt.Printf("[ERROR] %s\n", err.Error())
+				}
 			}
 
 			statusChan <- status
