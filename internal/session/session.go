@@ -2,6 +2,7 @@ package session
 
 import (
 	"errors"
+	"io"
 	"log"
 	"strings"
 
@@ -107,4 +108,24 @@ func (session *Session) Cwd(dir string) error {
 	}
 
 	return session.client.ChangeDir(dir)
+}
+
+func (session *Session) FileSize(file string) (int64, error) {
+	return session.client.FileSize(file)
+}
+
+func (session *Session) Get(file string) (*ftp.Response, error) {
+	if !session.IsOpen {
+		return nil, ErrConnectionClosed
+	}
+
+	return session.client.Retr(file)
+}
+
+func (session *Session) Put(file string, bytes io.Reader) error {
+	if !session.IsOpen {
+		return ErrConnectionClosed
+	}
+
+	return session.client.Stor(file, bytes)
 }

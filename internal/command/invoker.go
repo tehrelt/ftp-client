@@ -24,6 +24,8 @@ func NewInvoker(session *session.Session) *Invoker {
 			"login":      NewLoginCommand(session),
 			"ls":         NewListCommand(session),
 			"cd":         NewCwdCommand(session),
+			"get":        NewGetCommand(session),
+			"put":        NewPutCommand(session),
 		},
 	}
 }

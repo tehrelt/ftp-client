@@ -33,3 +33,7 @@ func NewArgs(prompt string) *CommandArgs {
 		Args:   args[1:],
 	}
 }
+
+func GetFileName(r []string) string {
+	return strings.Join(r, " ")
+}
