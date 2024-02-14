@@ -5,6 +5,7 @@ import (
 	"ftp-client/internal/command"
 	sess "ftp-client/internal/session"
 	"ftp-client/internal/terminal"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -56,7 +57,7 @@ func main() {
 				if err == command.ErrArgs {
 					fmt.Printf("Enter 'help' for args-guide\n")
 				} else {
-					fmt.Printf("[ERROR] %s\n", err.Error())
+					log.Println(err)
 				}
 			}
 

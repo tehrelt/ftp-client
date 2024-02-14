@@ -17,7 +17,8 @@ var (
 type Session struct {
 	client *ftp.ServerConn
 
-	IsOpen bool
+	IsOpen      bool
+	passiveMode bool
 }
 
 func NewSession() *Session {

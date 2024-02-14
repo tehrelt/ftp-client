@@ -29,6 +29,8 @@ func (cmd *GetCommand) Execute(args []string) (STATUS, error) {
 		return ERROR, err
 	}
 
+	defer response.Close()
+
 	bytes := make([]byte, size)
 
 	_, err = response.Read(bytes)
@@ -40,4 +42,3 @@ func (cmd *GetCommand) Execute(args []string) (STATUS, error) {
 
 	return SUCCESS, nil
 }
-
